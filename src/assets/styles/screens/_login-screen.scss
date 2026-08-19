@@ -1,0 +1,14 @@
+.login-screen {
+    width: 100vw;
+    height: 100svh;
+    background-image: url('/login-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &__container {
+        height: 80svh;
+        max-height: 53rem;
+        margin: auto;
+    }
+}
