@@ -1,0 +1,100 @@
+@use '../base/colors' as *;
+
+.btn {
+    background-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    border: none;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1f1d1c;
+    transition:
+        background-color 0.3s ease-in-out,
+        color 0.3s ease-in-out;
+    // font-family: 'JetBrains Mono';
+
+    // hover
+
+    &:focus {
+        outline-offset: 2px;
+        outline-style: solid;
+        outline-width: 2px;
+        outline-color: blue;
+        // outline: 2px solid yellow;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &--primary {
+        // background: linear-gradient(59deg, #ff5e24 0%, #f8953a 100%);
+        background-color: #ff6e39;
+
+        &:focus {
+            outline-color: light-dark($color-primary-700, $color-primary-300);
+        }
+
+        &:hover {
+            // background: linear-gradient(59deg, #ff7e4f 0%, #f9aa61 100%);
+            // background: linear-gradient(59deg, #e55420 0%, #df8634 100%);
+            background-color: #f8953a;
+        }
+    }
+
+    &--secondary {
+        // background: linear-gradient(59deg, $color-secondary-800 0%, $color-secondary-600 100%);
+        background-color: $color-secondary-600;
+
+        &:focus {
+            outline-color: light-dark($color-secondary-700, $color-secondary-300);
+        }
+
+        &:hover {
+            background-color: $color-secondary-700;
+        }
+    }
+
+    &--tertiary {
+        color: $color-text;
+
+        &:focus {
+            outline-color: light-dark($color-neutral-500, $color-neutral-300);
+        }
+
+        &:hover {
+            background-color: light-dark($color-neutral-200, $color-neutral-800);
+        }
+    }
+
+    &--xs {
+        padding: 0.6rem 1rem;
+        font-size: 1.2rem;
+    }
+
+    &--sm {
+        padding: 0.8rem 1.2rem;
+    }
+
+    &--md {
+        padding: 1.2rem 2.2rem;
+    }
+
+    &--lg {
+        padding: 1.6rem 2.6rem;
+    }
+
+    &--xl {
+        padding: 1.8rem 2.8rem;
+    }
+
+    &--full {
+        width: 100%;
+        padding: 1.4rem 0;
+    }
+
+    // focus, active
+}
