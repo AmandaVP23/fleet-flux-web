@@ -1,3 +1,6 @@
+@use '../base/colors' as *;
+@use '../base/typography' as *;
+
 .login-screen {
     width: 100vw;
     height: 100svh;
@@ -5,10 +8,54 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &__container {
-        height: 80svh;
-        max-height: 53rem;
+        height: 100%;
+        max-height: 49rem;
+        max-width: 45rem;
+        width: 100%;
         margin: auto;
+        background-color: $color-brackground;
+        position: relative;
+        padding: 3.2rem;
+        border: 1px solid $color-primary-600;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            right: -1px;
+            top: -4px;
+            height: 4px;
+            background-color: $color-primary-600;
+        }
+
+        form {
+            h1 {
+                font-weight: 700;
+                font-size: 2.4rem;
+            }
+
+            p {
+                font-size: 1.4rem;
+                font-weight: 400;
+                font-family: $font-secondary;
+                color: light-dark($color-neutral-500, $color-neutral-300);
+                margin-top: 0.6rem;
+            }
+        }
+
+        &__top {
+            padding-bottom: 1.8rem;
+            border-bottom: 1px solid $color-neutral-300;
+            margin-bottom: 2.8rem;
+
+            .logo-fleet-text {
+                fill: light-dark($color-primary-1000, $color-primary-100);
+            }
+        }
     }
 }
