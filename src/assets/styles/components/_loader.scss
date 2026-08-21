@@ -1,0 +1,68 @@
+@use '../base/colors' as *;
+
+.loader-full {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    background-color: light-dark(rgba(#000, 0.05), rgba(#fff, 0.3));
+    z-index: 2;
+
+    .loader {
+        --loader-color: light-dark(#{$color-primary-800}, #{$color-primary-400});
+        --loader-full-height: 3.8rem;
+        --loader-min-height: 2.5rem;
+    }
+
+    &--full-screen {
+        position: fixed;
+        z-index: 999;
+        background-color: rgba(#000, 0.6);
+
+        .loader {
+            --loader-color: #{$color-secondary-500};
+            --loader-full-height: 5.3rem;
+            --loader-min-height: 3rem;
+        }
+    }
+}
+
+.loader {
+    display: flex;
+    align-items: center;
+    --loader-color: #{$color-primary-100};
+    --loader-full-height: 3.2rem;
+    --loader-min-height: 1.8rem;
+
+    &__bar {
+        display: inline-block;
+        width: 3px;
+        height: var(--loader-min-height);
+        background-color: var(--loader-color);
+        border-radius: calc(var(--loader-min-height) / 2);
+        animation: loader-scale-up4 1s linear infinite;
+        opacity: 0.4;
+
+        &:nth-child(2) {
+            height: var(--loader-full-height);
+            margin: 0 5px;
+            animation-delay: 0.25s;
+        }
+
+        &:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+    }
+
+    @keyframes loader-scale-up4 {
+        20% {
+            opacity: 1;
+            transform: scaleY(1.5);
+        }
+
+        40% {
+            transform: scaleY(1);
+        }
+    }
+}

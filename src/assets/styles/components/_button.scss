@@ -11,23 +11,36 @@
     font-weight: 700;
     text-transform: uppercase;
     color: #1f1d1c;
+    position: relative;
     transition:
         background-color 0.3s ease-in-out,
         color 0.3s ease-in-out;
-    // font-family: 'JetBrains Mono';
-
-    // hover
+    $parent: &;
 
     &:focus {
         outline-offset: 2px;
         outline-style: solid;
         outline-width: 2px;
-        outline-color: blue;
-        // outline: 2px solid yellow;
     }
 
     &:hover {
         cursor: pointer;
+    }
+
+    &--loading {
+        #{$parent}__content {
+            opacity: 0.5;
+            visibility: hidden;
+        }
+    }
+
+    .loader {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(#000, 0.6);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     &--primary {
@@ -68,27 +81,70 @@
         &:hover {
             background-color: light-dark($color-neutral-200, $color-neutral-800);
         }
+
+        .loader {
+            background-color: unset;
+            --loader-color: light-dark(#{$color-primary-100}, #{$color-primary-800});
+        }
+    }
+
+    &--destructive {
+        color: #fef9ff;
+        background-color: $color-error-400;
+
+        &:focus {
+            outline-color: light-dark($color-neutral-500, $color-neutral-300);
+        }
+
+        &:hover {
+            background-color: light-dark($color-error-500, $color-error-300);
+        }
     }
 
     &--xs {
         padding: 0.6rem 1rem;
         font-size: 1.2rem;
+
+        .loader {
+            --loader-full-height: 2rem;
+            --loader-min-height: 1.2rem;
+        }
     }
 
     &--sm {
         padding: 0.8rem 1.2rem;
+
+        .loader {
+            --loader-full-height: 2.2rem;
+            --loader-min-height: 1.4rem;
+        }
     }
 
     &--md {
         padding: 1.2rem 2.2rem;
+
+        .loader {
+            --loader-full-height: 2.8rem;
+            --loader-min-height: 1.6rem;
+        }
     }
 
     &--lg {
         padding: 1.6rem 2.6rem;
+
+        .loader {
+            --loader-full-height: 3.2rem;
+            --loader-min-height: 1.8rem;
+        }
     }
 
     &--xl {
         padding: 1.8rem 2.8rem;
+
+        .loader {
+            --loader-full-height: 3.6rem;
+            --loader-min-height: 2.2rem;
+        }
     }
 
     &--full {
@@ -96,5 +152,49 @@
         padding: 1.4rem 0;
     }
 
-    // focus, active
+    // ICON
+    &--icon#{&}--xs {
+        padding: 0.4rem;
+
+        svg {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+    }
+
+    &--icon#{&}--sm {
+        padding: 0.6rem;
+
+        svg {
+            width: 1.4rem;
+            height: 1.4rem;
+        }
+    }
+
+    &--icon#{&}--md {
+        padding: 0.8rem;
+
+        svg {
+            width: 1.8rem;
+            height: 1.8rem;
+        }
+    }
+
+    &--icon#{&}--lg {
+        padding: 0.8rem;
+
+        svg {
+            width: 2.2rem;
+            height: 2.2rem;
+        }
+    }
+
+    &--icon#{&}--xl {
+        padding: 0.8rem;
+
+        svg {
+            width: 2.6rem;
+            height: 2.6rem;
+        }
+    }
 }

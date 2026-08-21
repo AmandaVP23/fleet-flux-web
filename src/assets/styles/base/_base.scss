@@ -1,9 +1,10 @@
 html {
-    color-scheme: light;
+    color-scheme: dark;
 }
 
 body {
     height: 100svh;
+    color-scheme: dark;
 }
 
 #root {
@@ -12,9 +13,14 @@ body {
 
 .tester {
     height: 100%;
-    background-color: red;
     display: grid;
     grid-template-rows: 1fr 1fr;
+
+    .loader-parent {
+        position: relative;
+        min-height: 10rem;
+        min-width: 30rem;
+    }
 
     .dark {
         background-color: #1f1d1c;
