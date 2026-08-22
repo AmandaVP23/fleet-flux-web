@@ -1,7 +1,3 @@
-import { useState } from 'react';
-
-import IconClose from '../assets/icons/icon-close.svg';
-import Button from '../components/ui/Button';
 import TextInput from '../components/ui/TextInput';
 
 function UITester() {

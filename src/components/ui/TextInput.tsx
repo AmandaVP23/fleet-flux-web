@@ -16,14 +16,14 @@ function TextInput(props: OwnProps) {
 
     return (
         <div className="form-input">
-            <label>
+            <div className="form-input__input">
                 <input
                     value={value}
                     placeholder=""
                     onChange={(e) => setValue(e.currentTarget.value)}
                 />
                 <span>{label}</span>
-            </label>
+            </div>
         </div>
     );
 }
