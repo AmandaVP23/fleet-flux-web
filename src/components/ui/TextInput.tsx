@@ -15,7 +15,7 @@ function TextInput(props: OwnProps) {
     const [value, setValue] = useState('');
 
     return (
-        <div className="form-input">
+        <div className="form-input form-input--error">
             <div className="form-input__input">
                 <input
                     value={value}
