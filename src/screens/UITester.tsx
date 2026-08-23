@@ -1,10 +1,11 @@
+import IconClose from '../assets/icons/icon-close.svg';
 import TextInput from '../components/ui/TextInput';
 
 function UITester() {
     return (
         <div className="tester">
             <div className="light">
-                <TextInput label="Hello world" />
+                <TextInput label="Hello world" endAdornment={<IconClose />} />
             </div>
             <div className="dark">
                 <TextInput label="Hello world" />
