@@ -1,23 +1,25 @@
 export function buildClassName(
     baseClass: string,
-    ...modifiers: Record<string, boolean>[] | (string | undefined | false | null)[]
+    ...modifiers: (Record<string, boolean> | string | boolean | null | undefined)[]
 ): string {
     let res: string[] = [];
-    if (typeof modifiers[0] === 'object' && modifiers[0] !== null) {
-        res = Object.entries(modifiers[0] || {})
-            .filter((value) => value)
-            .map(([extraClass, shouldHave]) => {
-                if (!shouldHave) return '';
-                return extraClass.includes('$')
-                    ? extraClass.replace('$', '')
-                    : `${baseClass}--${extraClass}`;
-            });
-    } else {
-        res = modifiers.map((modifier) => {
-            if (typeof modifier !== 'string') return '';
 
-            return modifier.includes('$') ? modifier.replace('$', '') : `${baseClass}--${modifier}`;
-        });
+    const getClass = (cls: string) => {
+        return cls.includes('$') ? cls.replace('$', '') : `${baseClass}--${cls}`;
+    };
+
+    for (const modifier of modifiers) {
+        if (typeof modifier === 'object' && modifier !== null) {
+            console.log(Object.entries(modifier));
+            const classes = Object.entries(modifier)
+                .filter(([, shouldHave]) => shouldHave)
+                .map(([extraClass]) => getClass(extraClass));
+
+            console.log('res', res);
+            res.push(...classes);
+        } else if (typeof modifier === 'string') {
+            res.push(getClass(modifier));
+        }
     }
 
     return `${baseClass} ${res.join(' ')}`.trim();

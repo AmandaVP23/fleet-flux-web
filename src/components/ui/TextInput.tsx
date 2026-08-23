@@ -1,31 +1,58 @@
-import { useState } from 'react';
+import { buildClassName } from '../../utils/misc';
+import type { ErrorResponse } from '../../utils/validations';
+import ErrorMessage from './ErrorMessage';
 
 interface OwnProps {
+    value: string;
     label: string;
     helperText?: string;
-    className?: string;
-    placeholder?: string;
+    extraClassName?: string;
     startAdornment?: React.ReactNode;
     endAdornment?: React.ReactNode;
-
-    // todo - error - form-input--error
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    error?: ErrorResponse | null;
 }
 
 function TextInput(props: OwnProps) {
-    const { label, helperText, className, placeholder, startAdornment, endAdornment } = props;
+    const {
+        label,
+        value,
+        helperText,
+        startAdornment,
+        endAdornment,
+        onChange,
+        error = null,
+        extraClassName = '',
+    } = props;
 
-    const [value, setValue] = useState('');
+    const containerClasses = buildClassName(
+        'form-input',
+        {
+            error: !!error,
+            'start-adornment': !!startAdornment,
+            'end-adornment': !!endAdornment,
+        },
+        `$${extraClassName}`,
+    );
 
     return (
-        <div className="form-input">
+        <div className={containerClasses}>
             <div className="form-input__input">
-                <input
-                    value={value}
-                    placeholder=""
-                    onChange={(e) => setValue(e.currentTarget.value)}
-                />
+                {startAdornment && (
+                    <div className={buildClassName('form-input__input__adornment', 'start')}>
+                        {startAdornment}
+                    </div>
+                )}
+                <input value={value} placeholder="" onChange={(e) => onChange?.(e)} />
                 <span>{label}</span>
+                {endAdornment && (
+                    <div className={buildClassName('form-input__input__adornment', 'end')}>
+                        {endAdornment}
+                    </div>
+                )}
             </div>
+            <ErrorMessage errorObj={error} />
+            {helperText && <div className="form-input__helper-txt">{helperText}</div>}
         </div>
     );
 }

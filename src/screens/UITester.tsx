@@ -1,14 +1,27 @@
-import IconClose from '../assets/icons/icon-close.svg';
 import TextInput from '../components/ui/TextInput';
 
 function UITester() {
     return (
         <div className="tester">
             <div className="light">
-                <TextInput label="Hello world" endAdornment={<IconClose />} />
+                <TextInput
+                    value=""
+                    label="Hello world"
+                    helperText="hello world, this is incredible"
+                    error={{
+                        typeOfViolation: 'NotBlank',
+                    }}
+                />
             </div>
             <div className="dark">
-                <TextInput label="Hello world" />
+                <TextInput
+                    value=""
+                    label="Hello world"
+                    helperText="hello world, this is incredible"
+                    error={{
+                        typeOfViolation: 'NotBlank',
+                    }}
+                />
             </div>
         </div>
     );

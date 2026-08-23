@@ -21,6 +21,12 @@ body {
         min-width: 30rem;
     }
 
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
     .dark {
         background-color: #1f1d1c;
         padding: 3rem;
