@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import useKeycloak from '../hooks/useKeycloak';
 import LoginScreen from '../screens/LoginScreen';
-import UITester from '../screens/UITester';
 
 interface OwnProps {
     children: React.ReactNode;
@@ -18,8 +17,7 @@ function RouteAuthProtection(props: OwnProps) {
     }, []);
 
     if (!isAuthenticated || isInitialized) {
-        return <UITester />;
-        // return <LoginScreen />;
+        return <LoginScreen />;
     }
 
     return children;

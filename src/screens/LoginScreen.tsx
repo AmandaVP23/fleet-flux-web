@@ -1,19 +1,14 @@
+import { useState } from 'react';
+
 import FullLogo from '../assets/icons/logos/logo-full-color.svg';
-import { buildClassName } from '../utils/misc';
+import TextInput from '../components/ui/TextInput';
 
 function LoginScreen() {
+    const [email, setEmail] = useState('');
+
     const onFormSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
     };
-
-    console.log(buildClassName('btn', 'hey', '$ola'));
-    console.log(
-        buildClassName('oi', {
-            jjj: true,
-            $dasdas: true,
-            'not-s': false,
-        }),
-    );
 
     return (
         <div className="login-screen">
@@ -24,6 +19,12 @@ function LoginScreen() {
                 <form onSubmit={onFormSubmit}>
                     <h1>Sign In To Your Workspace</h1>
                     <p>Built for real-time fleet oversight</p>
+                    <TextInput
+                        name="email"
+                        label="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.currentTarget.value)}
+                    />
                 </form>
             </div>
         </div>

@@ -5,6 +5,7 @@ import ErrorMessage from './ErrorMessage';
 interface OwnProps {
     value: string;
     label: string;
+    name: string;
     helperText?: string;
     extraClassName?: string;
     startAdornment?: React.ReactNode;
@@ -17,6 +18,7 @@ function TextInput(props: OwnProps) {
     const {
         label,
         value,
+        name,
         helperText,
         startAdornment,
         endAdornment,
@@ -43,7 +45,7 @@ function TextInput(props: OwnProps) {
                         {startAdornment}
                     </div>
                 )}
-                <input value={value} placeholder="" onChange={(e) => onChange?.(e)} />
+                <input value={value} name={name} placeholder="" onChange={(e) => onChange?.(e)} />
                 <span>{label}</span>
                 {endAdornment && (
                     <div className={buildClassName('form-input__input__adornment', 'end')}>
