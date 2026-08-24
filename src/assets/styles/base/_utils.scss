@@ -1,0 +1,101 @@
+@for $value from 0 through 100 {
+    .opacity-#{$value} {
+        opacity: $value * 0.01;
+    }
+}
+
+@for $value from 0 through 100 {
+    .mt-#{$value} {
+        margin-top: $value * 0.1rem;
+    }
+
+    .mb-#{$value} {
+        margin-top: $value * 0.1rem;
+    }
+
+    .mr-#{$value} {
+        margin-top: $value * 0.1rem;
+    }
+
+    .ml-#{$value} {
+        margin-top: $value * 0.1rem;
+    }
+}
+
+@for $value from 0 through 50 {
+    .gap-#{$value} {
+        gap: #{$value}rem;
+    }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.d-inline-flex {
+    display: inline-flex;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-row {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-direction: wrap;
+}
+
+.flex-nowrap {
+    flex-direction: nowrap;
+}
+
+.items-start {
+    align-items: flex-start;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.items-start {
+    align-items: flex-end;
+}
+
+.justify-start {
+    justify-content: flex-start;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-around {
+    justify-content: space-around;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.txt-center {
+    text-align: center;
+}

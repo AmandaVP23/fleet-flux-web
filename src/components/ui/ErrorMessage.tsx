@@ -1,7 +1,7 @@
-import type { ErrorResponse } from '../../utils/validations';
+import type { FieldErrorResponse } from '../../utils/validations';
 
 interface OwnProps {
-    errorObj: ErrorResponse | null;
+    errorObj: FieldErrorResponse | null;
 }
 
 function ErrorMessage(props: OwnProps) {

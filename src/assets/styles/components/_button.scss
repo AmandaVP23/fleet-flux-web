@@ -2,10 +2,6 @@
 
 .btn {
     background-color: transparent;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
     border: none;
     font-size: 1.4rem;
     font-weight: 700;
@@ -41,6 +37,13 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+    }
+
+    &__content {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
     }
 
     &--primary {
@@ -109,6 +112,11 @@
             --loader-full-height: 2rem;
             --loader-min-height: 1.2rem;
         }
+
+        svg {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
     }
 
     &--sm {
@@ -117,6 +125,11 @@
         .loader {
             --loader-full-height: 2.2rem;
             --loader-min-height: 1.4rem;
+        }
+
+        svg {
+            width: 1.6rem;
+            height: 1.6rem;
         }
     }
 
@@ -127,6 +140,11 @@
             --loader-full-height: 2.8rem;
             --loader-min-height: 1.6rem;
         }
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+        }
     }
 
     &--lg {
@@ -136,6 +154,11 @@
             --loader-full-height: 3.2rem;
             --loader-min-height: 1.8rem;
         }
+
+        svg {
+            width: 2.4rem;
+            height: 2.4rem;
+        }
     }
 
     &--xl {
@@ -144,6 +167,11 @@
         .loader {
             --loader-full-height: 3.6rem;
             --loader-min-height: 2.2rem;
+        }
+
+        svg {
+            width: 2.8rem;
+            height: 2.8rem;
         }
     }
 

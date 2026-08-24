@@ -15,7 +15,6 @@ export function buildClassName(
                 .filter(([, shouldHave]) => shouldHave)
                 .map(([extraClass]) => getClass(extraClass));
 
-            console.log('res', res);
             res.push(...classes);
         } else if (typeof modifier === 'string') {
             res.push(getClass(modifier));

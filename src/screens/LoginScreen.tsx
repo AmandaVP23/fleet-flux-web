@@ -1,13 +1,19 @@
 import { useState } from 'react';
 
+import IconArrowRight from '../assets/icons/icon-arrow-right.svg';
 import FullLogo from '../assets/icons/logos/logo-full-color.svg';
+import Button from '../components/ui/Button';
 import TextInput from '../components/ui/TextInput';
+import { validate } from '../utils/validations';
+import { loginValidations } from '../validations/loginValidations';
 
 function LoginScreen() {
     const [email, setEmail] = useState('');
 
     const onFormSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
+        console.log('form submmited');
+        validate({ email }, loginValidations);
     };
 
     return (
@@ -25,6 +31,12 @@ function LoginScreen() {
                         value={email}
                         onChange={(e) => setEmail(e.currentTarget.value)}
                     />
+                    <div className="d-flex justify-end">
+                        <Button type="submit">
+                            <span>Enter</span>
+                            <IconArrowRight />
+                        </Button>
+                    </div>
                 </form>
             </div>
         </div>

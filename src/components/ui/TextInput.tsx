@@ -1,5 +1,5 @@
 import { buildClassName } from '../../utils/misc';
-import type { ErrorResponse } from '../../utils/validations';
+import type { FieldErrorResponse } from '../../utils/validations';
 import ErrorMessage from './ErrorMessage';
 
 interface OwnProps {
@@ -11,7 +11,7 @@ interface OwnProps {
     startAdornment?: React.ReactNode;
     endAdornment?: React.ReactNode;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    error?: ErrorResponse | null;
+    error?: FieldErrorResponse | null;
 }
 
 function TextInput(props: OwnProps) {
