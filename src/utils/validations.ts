@@ -7,6 +7,8 @@ export interface FieldErrorResponse {
 
 export type ValidationType = 'NotBlank' | 'Email';
 
+export type FormErrors = Record<string, FieldErrorResponse> | null;
+
 export interface ErrorValidationParams {
     validations: ValidationType[];
     customErrorMsg?: (
@@ -53,7 +55,6 @@ function validateNotBlank(
     value: FieldType,
 ): FieldErrorResponse | null {
     if (value === null || (typeof value === 'string' && value.trim() === '')) {
-        console.log('hey!');
         return {
             typeOfViolation: 'NotBlank',
             customErrorMsg: setCustomErrorMsg(params, value),
@@ -66,7 +67,7 @@ function validateNotBlank(
 export function validate(
     fields: Record<string, FieldType>,
     validations: FormValidations,
-): Record<string, FieldErrorResponse> | null {
+): FormErrors {
     console.log('validate');
     console.log(fields);
     console.log(validations);
@@ -80,8 +81,6 @@ export function validate(
 
     const errors: Record<string, FieldErrorResponse> = {};
     Object.entries(validations).forEach(([fieldKey, validationParams]) => {
-        console.log('hey!', fieldKey);
-
         for (const validationType of validationParams.validations) {
             const fn = validationFunctionsMapper[validationType];
             if (!fn) {

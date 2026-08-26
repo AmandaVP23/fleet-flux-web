@@ -4,16 +4,26 @@ import IconArrowRight from '../assets/icons/icon-arrow-right.svg';
 import FullLogo from '../assets/icons/logos/logo-full-color.svg';
 import Button from '../components/ui/Button';
 import TextInput from '../components/ui/TextInput';
-import { validate } from '../utils/validations';
+import useKeycloak from '../hooks/useKeycloak';
+import { type FormErrors, validate } from '../utils/validations';
 import { loginValidations } from '../validations/loginValidations';
 
 function LoginScreen() {
     const [email, setEmail] = useState('');
+    const [formErrors, setFormErrors] = useState<FormErrors>(null);
+    const { requestKeycloakInformationAndInit } = useKeycloak();
 
-    const onFormSubmit = (e: React.SubmitEvent) => {
+    const onFormSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
-        console.log('form submmited');
-        validate({ email }, loginValidations);
+        const errors = validate({ email }, loginValidations);
+        setFormErrors(errors);
+        console.log('validations');
+
+        if (errors) {
+            return null;
+        }
+
+        await requestKeycloakInformationAndInit(email.trim());
     };
 
     return (
@@ -30,6 +40,7 @@ function LoginScreen() {
                         label="Email"
                         value={email}
                         onChange={(e) => setEmail(e.currentTarget.value)}
+                        error={formErrors?.email ?? null}
                     />
                     <div className="d-flex justify-end">
                         <Button type="submit">
