@@ -12,7 +12,7 @@ function useKeycloak() {
     const initializeKeycloak = async (email: string, config: KeycloakConfigParams) => {
         console.log('Initialize Keycloak');
         const keycloak = initKeycloak(config);
-        console.log(keycloak);
+
         try {
             // todo - handle save the config in local storage and init when has config
             // todo send tokens in init when has config + tokens
