@@ -20,12 +20,10 @@ function RouteAuthProtection(props: OwnProps) {
     } = useKeycloak();
     const tenantHostname = useAuthStore((store) => store.tenantHostname);
     const keycloakConfig = useAuthStore((store) => store.keycloakConfig);
-    const session = useAuthStore((state) => state.session);
 
     useEffect(() => {
         // todo - testar tenant name changed
         if (isInitialized) {
-            console.log('IS INITILIZED');
             return;
         }
         const hostname = resolveTenantHostname(window.location.hostname);
@@ -38,7 +36,6 @@ function RouteAuthProtection(props: OwnProps) {
             requestKeycloakInformationAndInit(hostname);
         }
     }, [
-        session,
         isAuthenticated,
         isInitialized,
         tenantHostname,
@@ -47,7 +44,7 @@ function RouteAuthProtection(props: OwnProps) {
         initializeKeycloak,
     ]);
 
-    if (!isAuthenticated || isInitialized) {
+    if (!isAuthenticated || !isInitialized) {
         return (
             <div>
                 <FullLoader show />

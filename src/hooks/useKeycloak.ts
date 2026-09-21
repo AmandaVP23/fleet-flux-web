@@ -1,22 +1,32 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import api from '../api/axios';
 import { KeycloakApi } from '../api/keycloakApi';
 import { initKeycloak } from '../keycloak';
-import { useAuthStore, type AuthSession } from '../stores/authStore';
+import { useAuthStore } from '../stores/authStore';
 import { type KeycloakConfigParams } from '../utils/auth';
 import { buildRoute } from '../utils/misc';
 
+let keycloakInitPromise: Promise<boolean> | undefined;
+let initializedConfig: KeycloakConfigParams | undefined;
+
 function useKeycloak() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    // const [isInitialized, setIsInitialized] = useState(false);
-    const isInitializedRef = useRef(false);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     const setKeycloakConfig = useAuthStore((state) => state.setKeycloakConfig);
     const setSession = useAuthStore((state) => state.setSession);
     const setTenantHostname = useAuthStore((state) => state.setTenantHostname);
     const session = useAuthStore((state) => state.session);
 
+    const sessionRef = useRef(session);
+
+    useEffect(() => {
+        console.log('session changed?', sessionRef.current, session);
+        sessionRef.current = session;
+    }, [session]);
+
+    // todo - handle error in keycloak - show error screen
     const initializeKeycloak = useCallback(
         async (config: KeycloakConfigParams) => {
             const keycloak = initKeycloak(config);
@@ -44,15 +54,24 @@ function useKeycloak() {
             };
 
             try {
-                console.log('Before calling init');
-                const authenticated = await keycloak.init({
-                    onLoad: 'login-required',
-                    checkLoginIframe: false,
-                    ...session,
-                    // responseMode: 'query',
-                });
+                const isSameConfig =
+                    initializedConfig &&
+                    initializedConfig.serverUrl === config.serverUrl &&
+                    initializedConfig.realm === config.realm &&
+                    initializedConfig.clientId === config.clientId;
 
-                isInitializedRef.current = true;
+                if (!isSameConfig || !keycloakInitPromise) {
+                    initializedConfig = config;
+                    keycloakInitPromise = keycloak.init({
+                        onLoad: 'login-required',
+                        checkLoginIframe: false,
+                        ...sessionRef.current,
+                    });
+                }
+
+                console.log('Before calling init');
+
+                const authenticated = await keycloakInitPromise;
 
                 // todo - refresh token
                 if (authenticated) {
@@ -71,9 +90,13 @@ function useKeycloak() {
                     realm: '',
                     clientId: '',
                 });
+                keycloakInitPromise = undefined;
+                initializedConfig = undefined;
+            } finally {
+                setIsInitialized(true);
             }
         },
-        [session, setTenantHostname, setSession, setKeycloakConfig],
+        [setTenantHostname, setSession, setKeycloakConfig],
     );
 
     const requestKeycloakInformationAndInit = useCallback(
@@ -84,15 +107,15 @@ function useKeycloak() {
                 );
                 setTenantHostname(hostname);
                 setKeycloakConfig(data);
-                await initializeKeycloak(data, session);
+                await initializeKeycloak(data);
             } catch {}
         },
-        [session, initializeKeycloak, setTenantHostname, setKeycloakConfig],
+        [initializeKeycloak, setTenantHostname, setKeycloakConfig],
     );
 
     return {
         isAuthenticated,
-        isInitialized: isInitializedRef,
+        isInitialized,
         initializeKeycloak,
         requestKeycloakInformationAndInit,
     };
