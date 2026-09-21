@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import useKeycloak from '../hooks/useKeycloak';
 import { useAuthStore } from '../stores/authStore';
@@ -22,10 +22,6 @@ function RouteAuthProtection(props: OwnProps) {
     const keycloakConfig = useAuthStore((store) => store.keycloakConfig);
 
     useEffect(() => {
-        // todo - testar tenant name changed
-        if (isInitialized) {
-            return;
-        }
         const hostname = resolveTenantHostname(window.location.hostname);
         if (tenantHostname && tenantHostname === hostname && keycloakConfig && !isInitialized) {
             initializeKeycloak(keycloakConfig);

@@ -22,7 +22,6 @@ function useKeycloak() {
     const sessionRef = useRef(session);
 
     useEffect(() => {
-        console.log('session changed?', sessionRef.current, session);
         sessionRef.current = session;
     }, [session]);
 
