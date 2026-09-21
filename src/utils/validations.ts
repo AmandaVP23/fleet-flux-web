@@ -68,9 +68,6 @@ export function validate(
     fields: Record<string, FieldType>,
     validations: FormValidations,
 ): FormErrors {
-    console.log('validate');
-    console.log(fields);
-    console.log(validations);
     const validationFunctionsMapper: Record<
         ValidationType,
         (params: ErrorValidationParams, value: FieldType) => FieldErrorResponse | null

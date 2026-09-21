@@ -23,3 +23,27 @@ export function buildClassName(
 
     return `${baseClass} ${res.join(' ')}`.trim();
 }
+
+export function buildRoute(
+    baseRoute: string,
+    params: Record<string, string | number | null | undefined>,
+): string {
+    let result = baseRoute;
+
+    Object.entries(params).forEach(([param, value]) => {
+        const routeKey = `{${param}}`;
+        if (!baseRoute.includes(routeKey)) {
+            // todo - add a devLog - only show when is dev
+            console.error(`Route key: ${routeKey} is not present in ${baseRoute}`);
+            return;
+        }
+
+        if (value === null || value === undefined) {
+            return;
+        }
+
+        result = result.replace(routeKey, encodeURIComponent(value));
+    });
+
+    return result;
+}

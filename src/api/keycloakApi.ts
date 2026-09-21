@@ -1,3 +1,3 @@
 export const KeycloakApi = {
-    keycloakConfig: '/keycloak-config',
+    keycloakConfig: '/keycloak-config/{hostname}',
 };

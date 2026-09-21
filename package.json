@@ -18,7 +18,8 @@
         "keycloak-js": "^26.2.4",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
-        "sass": "^1.102.0"
+        "sass": "^1.102.0",
+        "zustand": "^5.0.15"
     },
     "devDependencies": {
         "@tanstack/router-plugin": "^1.168.33",

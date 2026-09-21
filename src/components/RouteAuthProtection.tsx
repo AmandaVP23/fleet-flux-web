@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import useKeycloak from '../hooks/useKeycloak';
-import LoginScreen from '../screens/LoginScreen';
+import { useAuthStore } from '../stores/authStore';
+import { resolveTenantHostname } from '../utils/auth';
+import FullLoader from './ui/FullLoader';
 
 interface OwnProps {
     children: React.ReactNode;
@@ -10,14 +12,47 @@ interface OwnProps {
 function RouteAuthProtection(props: OwnProps) {
     const { children } = props;
 
-    const { isAuthenticated, isInitialized } = useKeycloak();
+    const {
+        isAuthenticated,
+        isInitialized,
+        initializeKeycloak,
+        requestKeycloakInformationAndInit,
+    } = useKeycloak();
+    const tenantHostname = useAuthStore((store) => store.tenantHostname);
+    const keycloakConfig = useAuthStore((store) => store.keycloakConfig);
+    const session = useAuthStore((state) => state.session);
 
     useEffect(() => {
-        console.log('Hey!');
-    }, []);
+        // todo - testar tenant name changed
+        if (isInitialized) {
+            console.log('IS INITILIZED');
+            return;
+        }
+        const hostname = resolveTenantHostname(window.location.hostname);
+        if (tenantHostname && tenantHostname === hostname && keycloakConfig && !isInitialized) {
+            initializeKeycloak(keycloakConfig);
+            return;
+        }
+
+        if (!isAuthenticated && !isInitialized && tenantHostname !== hostname) {
+            requestKeycloakInformationAndInit(hostname);
+        }
+    }, [
+        session,
+        isAuthenticated,
+        isInitialized,
+        tenantHostname,
+        keycloakConfig,
+        requestKeycloakInformationAndInit,
+        initializeKeycloak,
+    ]);
 
     if (!isAuthenticated || isInitialized) {
-        return <LoginScreen />;
+        return (
+            <div>
+                <FullLoader show />
+            </div>
+        );
     }
 
     return children;

@@ -6,6 +6,7 @@ import {
     createRoute,
     createRootRoute,
 } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
 import IndexRoute from './screens/IndexRoute';
 
@@ -44,6 +45,10 @@ declare module '@tanstack/react-router' {
 }
 
 function App() {
+    useEffect(() => {
+        console.log(window.location);
+    }, []);
+
     return <RouterProvider router={router} />;
 }
 

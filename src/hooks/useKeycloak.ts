@@ -1,49 +1,99 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import api from '../api/axios';
 import { KeycloakApi } from '../api/keycloakApi';
 import { initKeycloak } from '../keycloak';
+import { useAuthStore, type AuthSession } from '../stores/authStore';
 import { type KeycloakConfigParams } from '../utils/auth';
+import { buildRoute } from '../utils/misc';
 
 function useKeycloak() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isInitialized, setIsInitialized] = useState(false);
+    // const [isInitialized, setIsInitialized] = useState(false);
+    const isInitializedRef = useRef(false);
 
-    const initializeKeycloak = async (email: string, config: KeycloakConfigParams) => {
-        console.log('Initialize Keycloak');
-        const keycloak = initKeycloak(config);
+    const setKeycloakConfig = useAuthStore((state) => state.setKeycloakConfig);
+    const setSession = useAuthStore((state) => state.setSession);
+    const setTenantHostname = useAuthStore((state) => state.setTenantHostname);
+    const session = useAuthStore((state) => state.session);
 
-        try {
-            // todo - handle save the config in local storage and init when has config
-            // todo send tokens in init when has config + tokens
-            const authenticated = await keycloak.init({
-                onLoad: 'check-sso',
-            });
+    const initializeKeycloak = useCallback(
+        async (config: KeycloakConfigParams) => {
+            const keycloak = initKeycloak(config);
 
-            if (!authenticated) {
-                keycloak.login({
-                    loginHint: email,
+            keycloak.onAuthSuccess = () => {
+                console.log('onAuthSuccess');
+            };
+
+            keycloak.onAuthError = (error) => {
+                console.error('onAuthError', error);
+                setTenantHostname('');
+                setKeycloakConfig({
+                    serverUrl: '',
+                    realm: '',
+                    clientId: '',
+                });
+            };
+
+            keycloak.onAuthLogout = () => {
+                console.log('onAuthLogout');
+            };
+
+            keycloak.onTokenExpired = () => {
+                console.log('onTokenExpired');
+            };
+
+            try {
+                console.log('Before calling init');
+                const authenticated = await keycloak.init({
+                    onLoad: 'login-required',
+                    checkLoginIframe: false,
+                    ...session,
+                    // responseMode: 'query',
+                });
+
+                isInitializedRef.current = true;
+
+                // todo - refresh token
+                if (authenticated) {
+                    setSession({
+                        token: keycloak.token,
+                        refreshToken: keycloak.refreshToken,
+                        idToken: keycloak.idToken,
+                    });
+                    setIsAuthenticated(true);
+                }
+            } catch (error) {
+                console.error('Keycloak init failed:', error);
+                setTenantHostname('');
+                setKeycloakConfig({
+                    serverUrl: '',
+                    realm: '',
+                    clientId: '',
                 });
             }
+        },
+        [session, setTenantHostname, setSession, setKeycloakConfig],
+    );
 
-            console.log('authenticated', authenticated);
-        } catch {}
-    };
-
-    const requestKeycloakInformationAndInit = async (email: string) => {
-        try {
-            const { data } = await api.post<KeycloakConfigParams>(KeycloakApi.keycloakConfig, {
-                email,
-            });
-            console.log('data');
-            console.log(data);
-            await initializeKeycloak(email, data);
-        } catch {}
-    };
+    const requestKeycloakInformationAndInit = useCallback(
+        async (hostname: string) => {
+            try {
+                const { data } = await api.get<KeycloakConfigParams>(
+                    buildRoute(KeycloakApi.keycloakConfig, { hostname }),
+                );
+                setTenantHostname(hostname);
+                setKeycloakConfig(data);
+                await initializeKeycloak(data, session);
+            } catch {}
+        },
+        [session, initializeKeycloak, setTenantHostname, setKeycloakConfig],
+    );
 
     return {
         isAuthenticated,
-        isInitialized,
+        isInitialized: isInitializedRef,
+        initializeKeycloak,
         requestKeycloakInformationAndInit,
     };
 }
