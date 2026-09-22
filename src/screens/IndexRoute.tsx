@@ -1,4 +1,4 @@
-import { Outlet, Link } from '@tanstack/react-router';
+import { Outlet } from '@tanstack/react-router';
 
 import RouteAuthProtection from '../components/RouteAuthProtection';
 import Topbar from '../components/Topbar';

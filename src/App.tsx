@@ -1,14 +1,9 @@
-import {
-    Outlet,
-    RouterProvider,
-    Link,
-    createRouter,
-    createRoute,
-    createRootRoute,
-} from '@tanstack/react-router';
+import { RouterProvider, createRouter, createRoute, createRootRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 import IndexRoute from './screens/IndexRoute';
+import MapScreen from './screens/MapScreen';
+import VehiclesScreen from './screens/VehiclesScreen';
 
 const rootRoute = createRootRoute({
     component: () => <IndexRoute />,
@@ -17,21 +12,13 @@ const rootRoute = createRootRoute({
 const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
-    component: function Index() {
-        return (
-            <div className="p-2">
-                <h3>Welcome Home!</h3>
-            </div>
-        );
-    },
+    component: MapScreen,
 });
 
 const aboutRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/about',
-    component: function About() {
-        return <div className="p-2">Hello from About!</div>;
-    },
+    path: '/vehicles',
+    component: VehiclesScreen,
 });
 
 const routeTree = rootRoute.addChildren([indexRoute, aboutRoute]);
