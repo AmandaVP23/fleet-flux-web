@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import api from '../api/axios';
 import { KeycloakApi } from '../api/keycloakApi';
-import { initKeycloak } from '../keycloak';
+import { initKeycloak, keycloak } from '../keycloak';
 import { useAuthStore } from '../stores/authStore';
 import { type KeycloakConfigParams } from '../utils/auth';
 import { buildRoute } from '../utils/misc';
@@ -32,6 +32,7 @@ function useKeycloak() {
 
             keycloak.onAuthSuccess = () => {
                 console.log('onAuthSuccess');
+                handleAuthSuccess();
             };
 
             keycloak.onAuthError = (error) => {
@@ -111,6 +112,13 @@ function useKeycloak() {
         },
         [initializeKeycloak, setTenantHostname, setKeycloakConfig],
     );
+
+    const handleAuthSuccess = async () => {
+        console.log('profile', keycloak);
+        const p = await keycloak?.loadUserProfile();
+        console.log(p);
+        console.log(keycloak?.profile);
+    };
 
     return {
         isAuthenticated,

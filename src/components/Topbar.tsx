@@ -1,4 +1,4 @@
-import { Link, useLocation, useRouter } from '@tanstack/react-router';
+import { Link, useLocation } from '@tanstack/react-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import IconMap from '../assets/icons/icon-map.svg';
@@ -18,8 +18,6 @@ function Topbar() {
     });
 
     const updateIndicator = useCallback(() => {
-        console.log('pathname', pathname, mapLinkRef.current);
-        console.log(vehicleslinkRef.current);
         switch (pathname) {
             case '/':
                 setIndicatorWidth(mapLinkRef.current?.offsetWidth || 0);
@@ -33,8 +31,6 @@ function Topbar() {
     }, [pathname]);
 
     useEffect(() => {
-        // todo - get current route and put indicator in correct place
-        console.log('pathname', pathname);
         updateIndicator();
     }, [pathname, updateIndicator]);
 
@@ -51,17 +47,6 @@ function Topbar() {
         // };
     }, []);
 
-    // todo - listen for route changes always and update there always
-
-    const onMapLinkClicked = () => {
-        if (indicatorRef.current && mapLinkRef.current) {
-            // indicatorRef.current.offsetWidth = mapLinkRef.current.offsetWidth;
-            console.log(mapLinkRef.current);
-        }
-    };
-
-    const onVehiclesLinkClicked = () => {};
-
     return (
         <div className="topbar">
             <div className="topbar__right">
@@ -75,15 +60,11 @@ function Topbar() {
                             transform: `translate(${indicatorLeft}px, 0)`,
                         }}
                     />
-                    <Link ref={mapLinkRef} to="/" onClick={() => onMapLinkClicked()}>
+                    <Link ref={mapLinkRef} to="/">
                         <IconMap />
                         <span>Map</span>
                     </Link>
-                    <Link
-                        ref={vehicleslinkRef}
-                        to="/vehicles"
-                        onClick={() => onVehiclesLinkClicked()}
-                    >
+                    <Link ref={vehicleslinkRef} to="/vehicles">
                         <IconVehicle />
                         <span>Vehicles</span>
                     </Link>
