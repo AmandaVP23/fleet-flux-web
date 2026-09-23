@@ -1,17 +1,13 @@
 @use '../base/colors' as *;
 
 .topbar {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    right: 1rem;
-    border-radius: 0.8rem;
-    padding: 1.2rem;
+    height: 100%;
+    padding: 0 2.4rem;
     display: inline-flex;
     align-items: center;
     z-index: 999;
 
-    background-color: rgba(#2a2a2a, 0.92);
+    background-color: #2a2a2a;
 
     &__right {
         display: inline-flex;
@@ -22,7 +18,7 @@
             border-radius: 0.8rem;
             display: inline-flex;
             gap: 1rem;
-            background-color: #2a2a2a;
+            background-color: #202020;
             position: relative;
 
             &__indicator {

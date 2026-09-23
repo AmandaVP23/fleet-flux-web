@@ -1,12 +1,12 @@
 import { RouterProvider, createRouter, createRoute, createRootRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
-import IndexRoute from './screens/IndexRoute';
 import MapScreen from './screens/MapScreen';
+import RootWrapper from './screens/RootWrapper';
 import VehiclesScreen from './screens/VehiclesScreen';
 
 const rootRoute = createRootRoute({
-    component: () => <IndexRoute />,
+    component: () => <RootWrapper />,
 });
 
 const indexRoute = createRoute({

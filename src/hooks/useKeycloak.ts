@@ -2,10 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import api from '../api/axios';
 import { KeycloakApi } from '../api/keycloakApi';
-import { initKeycloak, keycloak } from '../keycloak';
+import { UsersApi } from '../api/usersApi';
+import { getKeycloak } from '../auth/keycloak';
 import { useAuthStore } from '../stores/authStore';
 import { type KeycloakConfigParams } from '../utils/auth';
 import { buildRoute } from '../utils/misc';
+import { useUsers } from './useUsers';
 
 let keycloakInitPromise: Promise<boolean> | undefined;
 let initializedConfig: KeycloakConfigParams | undefined;
@@ -13,6 +15,8 @@ let initializedConfig: KeycloakConfigParams | undefined;
 function useKeycloak() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false);
+
+    const { requestAuthenticatedUserInfo } = useUsers();
 
     const setKeycloakConfig = useAuthStore((state) => state.setKeycloakConfig);
     const setSession = useAuthStore((state) => state.setSession);
@@ -28,11 +32,10 @@ function useKeycloak() {
     // todo - handle error in keycloak - show error screen
     const initializeKeycloak = useCallback(
         async (config: KeycloakConfigParams) => {
-            const keycloak = initKeycloak(config);
+            const keycloak = getKeycloak(config);
 
             keycloak.onAuthSuccess = () => {
                 console.log('onAuthSuccess');
-                handleAuthSuccess();
             };
 
             keycloak.onAuthError = (error) => {
@@ -75,12 +78,15 @@ function useKeycloak() {
 
                 // todo - refresh token
                 if (authenticated) {
+                    console.log('hey!');
+                    console.log(keycloak.token);
                     setSession({
                         token: keycloak.token,
                         refreshToken: keycloak.refreshToken,
                         idToken: keycloak.idToken,
                     });
                     setIsAuthenticated(true);
+                    handleAuthSuccess();
                 }
             } catch (error) {
                 console.error('Keycloak init failed:', error);
@@ -114,10 +120,9 @@ function useKeycloak() {
     );
 
     const handleAuthSuccess = async () => {
-        console.log('profile', keycloak);
-        const p = await keycloak?.loadUserProfile();
-        console.log(p);
-        console.log(keycloak?.profile);
+        // const user = await requestAuthenticatedUserInfo();
+        // console.log(user);
+        const userInfo = await requestAuthenticatedUserInfo();
     };
 
     return {

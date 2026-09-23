@@ -3,15 +3,17 @@ import { Outlet } from '@tanstack/react-router';
 import RouteAuthProtection from '../components/RouteAuthProtection';
 import Topbar from '../components/Topbar';
 
-function IndexRoute() {
+function RootWrapper() {
     return (
         <RouteAuthProtection>
             <div className="auth-wrapper">
                 <Topbar />
-                <Outlet />
+                <div className="main-content">
+                    <Outlet />
+                </div>
             </div>
         </RouteAuthProtection>
     );
 }
 
-export default IndexRoute;
+export default RootWrapper;
